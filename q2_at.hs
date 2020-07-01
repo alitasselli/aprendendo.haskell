@@ -1,30 +1,20 @@
-{-*Main> replace "segunda" "quinta" "As aulas ocorrem nas segundas."
-"As aulas ocorrem nas quintas."
-*Main>
-Conteúdo relacionado: lista -}
+
+removeIndex :: Int -> Int -> [Int] -> [Int] -> [Int] -- 0 -> 3 -> [] -> [1,2,3,4,5]
+removeIndex c x l (y:ys) | c /= x = removeIndex (c+1) x (l ++ [y]) ys
+                         | otherwise = l ++ ys
+
+removeC :: Int -> [Int] -> [Int]
+removeC x y | abs(x) `mod` length y > 0 = removeIndex 0 (abs((x `mod` length y) - length y)) [] y
+            | otherwise = removeIndex 0 0 [] y
+
+removeD :: Int -> [Int] -> [Int]
+removeD x y | abs(x) `mod` length y > 0 = removeIndex 0 ((abs(x) `mod` length y) - 1) [] y
+            | otherwise = removeIndex 0 (length y - 1) [] y
+
+removeN :: Int -> [Int] -> [Int]
+removeN x y | abs(x) <= length y && x > 0 = removeIndex 0 (length y - x) [] y
+            | abs(x) <= length y && x < 0 = removeIndex 0 (abs (x) - 1) [] y
+            | abs(x) > length y && x > 0 = removeC x y
+            | abs(x) > length y && x < 0 = removeD x y
 
 
-teste :: String -> String -> String -> String
-teste a b (c:cs) | a == c = a ++ " " ++ b 
-                 | otherwise = teste a cs
-
-
-
-replace :: String -> String  -> String -> String 
-replace a b (c:cs)| a == c = c ++ " " ++ b 
-                  | otherwise = replace a == cs ++ " " ++ b 
-
-
-{-replace "segunda" "quinta" "As aulas ocorrem nas segundas."
-
-"as" "aulas" "ocorrem" "nas" "segundas" "."
-
-comparar cada item individualmente 
-
-as == segunda = FALSE
-aulas == segunda = FALSE 
-ocorrem == segunda = FALSE 
-nas == segunda = FALSE 
-segunda == segunda = TRUE
-retirar segunda da frase 
-concatenar quinta com a frase no lugar da segunda-}
